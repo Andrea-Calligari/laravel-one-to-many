@@ -3,19 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Type;
 use App\Models\Project;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
-class ProjectController extends Controller    
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::with(['type', 'type.projects'])->get();// 2 query
 
-        return view('admin.projects.index',compact('projects'));
+
+
+        return view('admin.projects.index', compact('projects'));
     }
 
     /**
@@ -23,28 +30,45 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        $types = Type::orderBy('name', 'asc')->get();
+        return view('admin.projects.create', compact('types'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
-        
-        //validazione campi 
-        $request->validate([
-            'project_name' => 'required|string|min:2',
-            'description' => 'nullable|max:2000',
-            'working_hours' => 'required|integer',
-            'co_workers' => 'required|max:200',
-        ]);
-        
-        $form_data = $request->all();
 
-        $new_project =  Project::create($form_data);
+        // validazione in StoreProjectController
+        $form_data = $request->validated();
 
-        return to_route('admin.projects.show', $new_project);
+
+
+
+
+        $base_slug = Str::slug($form_data['project_name']);
+        $slug = $base_slug;
+        $n = 0;
+
+
+
+        do {
+            $find = Project::where('slug', $slug)->first(); // null | Project
+            // @dump($n);
+            if ($find !== null) {
+                $n++;
+                $slug = $base_slug . '-' . $n;
+            }
+
+        } while ($find !== null);
+
+
+        $form_data['slug'] = $slug;
+
+        $project = Project::create($form_data);
+
+        return to_route('admin.projects.show', $project);
     }
 
     /**
@@ -52,7 +76,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('admin.projects.show',compact('project'));
+        return view('admin.projects.show', compact('project'));
     }
 
     /**
@@ -60,26 +84,37 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit',compact('project'));
+
+
+
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
-        $request->validate([
-            'project_name' => 'required|string|min:2',
-            'description' => 'nullable|max:2000',
-            'working_hours' => 'required|integer',
-            'co_workers' => 'required|max:200',
-        ]);
-        $form_data = $request->all();
+        // validazione in UpdateProjectController
+
+        $form_data = $request->validated();
+
+        
+        
+
+        
+
+
+
         //  $portfolio->fill($form_data);
+
         // $portfolio->save();
+
         //oppure - fa subito il fill()e il salvataggio- save()
+
         $project->update($form_data);
-        return to_route('admin.projects.show',$project);
+
+        return to_route('admin.projects.show', $project);
     }
 
     /**

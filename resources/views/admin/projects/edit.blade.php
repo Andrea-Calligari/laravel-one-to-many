@@ -16,6 +16,11 @@
                 <input type="text" name="project_name" class="form-control" id="project_name" placeholder="Insert your project name "
                     value="{{old('project_name', $project->project_name)}}">
             </div>
+             <div class="mb-3">
+                <label for="slug" class="form-label">Slug</label>
+                <input type="text" name="slug" class="form-control" id="slug" placeholder="Insert slug "
+                    value="{{old('slug', $project->slug)}}">
+            </div> 
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
                 <textarea class="form-control" name="description" id="description" rows="3"

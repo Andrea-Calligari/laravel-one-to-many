@@ -4,7 +4,7 @@
 <section class="py-5">
     <div class="container">
 
-        <form action="{{ route('admin.portfolios.store') }}" method="POST">
+        <form action="{{ route('admin.projects.store') }}" method="POST">
 
             {{-- Cross Site Request Forgering --}}
 
@@ -16,6 +16,16 @@
                 <input type="text" name="project_name" class="form-control" id="project_name" placeholder="Insert your project name "
                     value="{{old('project_name')}}">
             </div>
+            <label for="type">Type Select</label>
+            <select class="form-select" name="type" id="type">
+                <option selected value="">--Select a Type--</option>
+                <option value="frontend">--FrontEnd--</option>
+                <option value="backend">--BackEnd--</option>
+                <option value="fullstack">--FullStack--</option>
+                <option value="devops">--DevOps--</option>
+
+            </select>
+            
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
                 <textarea class="form-control" name="description" id="description" rows="3"

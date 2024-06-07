@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            //creo la colonna
-            $table->unsignedBigInteger('type_id');
-            // creo il vincolo
-            $table->foreign('type_id')->references('id')->on('types');
+            //aggiungo la colonna
+            $table->unsignedBigInteger('type_id')->nullable()->after('id');
+            
+            // aggiungo il vincolo
+            $table->foreign('type_id')->references('id')->on('types')->onDelete('set null');
+            
             
         });
     }
@@ -30,6 +32,7 @@ return new class extends Migration
             $table->dropForeign('projects_type_id_foreign');
             //droppo la colonna
             $table->dropColumn('type_id');
+            
         });
     }
 };

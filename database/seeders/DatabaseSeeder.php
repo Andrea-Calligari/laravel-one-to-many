@@ -18,5 +18,13 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        //Possiamo utilizzare il DataBaseSeeder per lanciare in ordine che vogliamo Seeder e Migrations!!!!!
+        $this->call(([
+            UserSeeder::class,
+            TypeSeeder::class,
+            ProjectSeeder::class,
+            
+        ]));
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Guest\GuestController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,7 @@ Route::get('/', function () {
 
 
 
+Route::get('/guest/projects',[GuestController::class, 'index'])->name('guest.project');
     
 Route::middleware(['auth', 'verified'])
     ->name('admin.')

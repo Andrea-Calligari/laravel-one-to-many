@@ -3,13 +3,16 @@
 
 <div class="container p-5">
     <div class="col-6">
-
+   <h1> @dump($project->slug)</h1>
+   <h1> @dump($project->project_name)</h1>
         <div class="card ">
             <div class="card-header">
                 <div class="card-title">
                     <p class="fst-italic"><span class="fw-bold">Name:</span> {{$project->project_name}}</p>
                 </div>
+                <p class="fst-italic"><span class="fw-bold">Slug:</span> {{$project->slug}}</p>
                 <p class="fst-italic"><span class="fw-bold">Description:</span> {{$project->description}}</p>
+                <p class="fst-italic"><span class="fw-bold">Type:</span>{{ $project->type ? $project->type->name : '' }}</p>
             </div>
             <div class="card-body">
                 <p class="fst-italic"><span class="fw-bold">Working-Hours:</span> {{$project->working_hours}}</p>

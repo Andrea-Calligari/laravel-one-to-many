@@ -44,8 +44,14 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto ">
                         <li class="nav-item d-flex gap-3">
+                            @auth
                             <a class="nav-link" href="{{ route('admin.projects.index') }}">{{ __('Projects') }}</a>
                             <a class="nav-link" href="{{ route('admin.projects.create') }}">{{ __('New Project') }}</a>
+                            @else
+                            <a class="nav-link" href="{{ route('guest.project') }}">{{ __('Projects') }}</a>
+                            @endif
+
+
                         </li>
                     </ul>
 
